@@ -1,0 +1,2 @@
+class Utilidades:
+    pass
