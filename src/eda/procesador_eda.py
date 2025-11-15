@@ -34,13 +34,38 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
     
 # 1. Metodo en el cual obtendremos informacion general del Dataset que se nos a proporcionado.
     def informacion_premier_league(self):
-        print("Informacion General de la Premier League:\n")
-        print("Head")
-        print (self.__DF_PremierLeague.head(), "\n")
-        print("Informacion")
-        print (self.__DF_PremierLeague.info(), "\n")
-        print("Estadisticas")
+        print('Informacion General de la Premier League:\n')
+        print('Head')
+        print (self.__DF_PremierLeague.head(), '\n')
+        print('Informacion')
+        print (self.__DF_PremierLeague.info(), '\n')
+        print('Estadisticas')
         print (self.__DF_PremierLeague.describe())
+
+#-------------------------------------------------------------------------------------------------------------------#
+
+# 2. Metodo con el que podremos corregir textos ya sea el nombre de los jugadores, equipos, etc.
+# Primero debemos crear un metodo que nos ayude a corregir los textos. 
+    def correccion_de_textos(self, texto):
+        try:
+            return texto.encode('utf-8').decode('utf-8')
+        except:
+            return texto
+    
+    def textos_limpios(self):
+        textos = self.__DF_PremierLeague.select_dtypes(include=['object', 'category']).columns
+        for columnas in textos:
+            self.__DF_PremierLeague[columnas].astype(str).apply(self.correccion_de_textos)
+
+#-------------------------------------------------------------------------------------------------------------------#
+
+# 3. Metodo en el cual obtendremos aquellos datos nulos.
+    def datos_nulos(self):
+        print('Este dataset tiene nulos en las siguiente columnas: \n')
+        print(self.__DF_PremierLeague.isnull().sum())
+
+# 3.1 Dentro de este segundo metodo tendremos 2 metodos que ayuden a eliminar o imputar los datos nulos.
+
 
 
 
