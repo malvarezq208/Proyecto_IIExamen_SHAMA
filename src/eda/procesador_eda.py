@@ -1,6 +1,7 @@
 # Importamos las librerías necesarias.
 import pandas as pd
 import numpy as np
+import os # Libreria para manejar rutas de archivos.
 
 class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a realizar un analisis EDA.
     def __init__(self, DF_PremierLeague = pd.DataFrame()): # Realizamos el constructor.
@@ -44,18 +45,14 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
 
 #-------------------------------------------------------------------------------------------------------------------#
 
-# 2. Metodo con el que podremos corregir textos ya sea el nombre de los jugadores, equipos, etc.
-# Primero debemos crear un metodo que nos ayude a corregir los textos. 
-    def correccion_de_textos(self, texto):
-        try:
-            return texto.encode('utf-8').decode('utf-8')
-        except:
-            return texto
-    
-    def textos_limpios(self):
-        textos = self.__DF_PremierLeague.select_dtypes(include=['object', 'category']).columns
-        for columnas in textos:
-            self.__DF_PremierLeague[columnas].astype(str).apply(self.correccion_de_textos)
+# 2. Metodo con el que podremos limpiar textos ya sea el nombre de los jugadores, equipos, etc.
+    def limpiar_texto(self):
+        columnas_texto = self.__DF_PremierLeague.select_dtypes(include=['object', 'category']).columns # Selecciona las columnas de tipo texto.
+
+        for columna in columnas_texto:
+            self.__DF_PremierLeague[columna] = (self.__DF_PremierLeague[columna].astype(str).apply(
+                lambda x: x.encode('utf-8', 'ignore').decode('utf-8', 'ignore'))
+            ) # Asegura que los datos sean de tipo string.
 
 #-------------------------------------------------------------------------------------------------------------------#
 
@@ -64,8 +61,57 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
         print('Este dataset tiene nulos en las siguiente columnas: \n')
         print(self.__DF_PremierLeague.isnull().sum())
 
-# 3.1 Dentro de este segundo metodo tendremos 2 metodos que ayuden a eliminar o imputar los datos nulos.
+# Dentro de este segundo metodo tendremos 2 metodos que ayuden a eliminar o imputar los datos nulos.
+# Eliminar los datos nulos.
+    def eliminar_datos_nulos(self):
+        self.__DF_PremierLeague.dropna(inplace=True)
+        print('Los datos nulos han sido eliminados')
 
+# Imputar los datos nulos (utilizar la media para los numericos y la moda para las categoricas).
+    def imputar_datos_nulos(self):
+        for columnas in self.__DF_PremierLeague.columns:
+            if self.__DF_PremierLeague[columnas].dtype in [np.float64, np.int64]:
+                self.__DF_PremierLeague[columnas].fillna(self.__DF_PremierLeague[columnas].mean(), inplace=True)
+            else:
+                self.__DF_PremierLeague[columnas].fillna(self.__DF_PremierLeague[columnas].mode()[0], inplace=True)
+        
+        print('Los datos nulos han sido imputados correctamente')
 
+#-------------------------------------------------------------------------------------------------------------------#
+# 4. Metodo en cual podremos obtener los valores duplicados.
+    def datos_duplicados(self):
+        print('Este dataset tiene los siguientes datos duplicados: \n') 
+        print(self.__DF_PremierLeague.duplicated().sum())
 
+# Ese metodo nos da el numero de filas duplicadas, en este nuevo metodo vamos a eliminar esos datos duplicados.
+    def eliminar_datos_duplicados(self):
+        self.__DF_PremierLeague.drop_duplicates(inplace=True)
+        print('Los datos duplicados del dataset han sido eliminados correctamente')
+
+#-------------------------------------------------------------------------------------------------------------------#
+# 5. metodo para limpiar la edad de los juagadores ya que solo queremos el primer numero (29-343).
+    def correccion_edad(self):
+        self.__DF_PremierLeague['Age'] = self.__DF_PremierLeague['Age'].astype(str).str.split('-').str[0].astype(int)
+        print('La columna de Age ha sido corregida correctamente')
+
+#-------------------------------------------------------------------------------------------------------------------#
+# 6. Metodo con el que vamos a corregir la columna '#' por 'Number' que es numero de la camiseta del jugador.
+    def numero_camiseta(self):
+        self.__DF_PremierLeague.rename(columns={'#': 'Number'}, inplace=True)
+        print("La columna '#' ha sido renombrada a 'Number' correctamente")
+
+#-------------------------------------------------------------------------------------------------------------------#
+# 7. Metodo de normalizacion de categorias equipo-posicion.
+    def normalizacion_categorias(self):
+        self.__DF_PremierLeague['Team'] = (self.__DF_PremierLeague['Team'].astype(str).str.title().str.strip()) # Normaliza los nombres de los equipos.
+        self.__DF_PremierLeague['Position'] = (self.__DF_PremierLeague['Position'].astype(str).str.upper().str.strip()) # Normaliza las posiciones de los jugadores.
+        print('Las categorias de equipo y posicion han sido normalizadas')
+
+#-------------------------------------------------------------------------------------------------------------------#
+# 8. Metodo para poder guardar nuestro csv limpio y guardarlo en la carpeta processed.
+    def csv_limpio(self, ruta_guardar_csv = 'data\processed\premier_clean.csv'):
+        carpeta = os.path.dirname(ruta_guardar_csv) # Obtenemos la carpeta del path proporcionado.
+        os.makedirs(carpeta, exist_ok=True) # Creamos la carpeta si no existe.
+        self.__DF_Premier_League.to_csv(ruta_guardar_csv, index=False) # Guardamos el DataFrame como un archivo CSV.
+        print('El Dataset limpio se a guardado en la ruta:', {ruta_guardar_csv})
 
