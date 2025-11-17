@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import os # Libreria para manejar rutas de archivos.
 
+#Iniciamos la clase.
+
 class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a realizar un analisis EDA.
     def __init__(self, DF_PremierLeague = pd.DataFrame()): # Realizamos el constructor.
         self.__DF_PremierLeague = DF_PremierLeague # Aqui tenemos nustro atributo privado que almacena el DataFrame.
@@ -109,9 +111,8 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
 
 #-------------------------------------------------------------------------------------------------------------------#
 # 8. Metodo para poder guardar nuestro csv limpio y guardarlo en la carpeta processed.
-    def csv_limpio(self, ruta_guardar_csv = 'data\processed\premier_clean.csv'):
+    def csv_limpio(self, ruta_guardar_csv = 'data/processed/premier_clean.csv'):
         carpeta = os.path.dirname(ruta_guardar_csv) # Obtenemos la carpeta del path proporcionado.
         os.makedirs(carpeta, exist_ok=True) # Creamos la carpeta si no existe.
-        self.__DF_Premier_League.to_csv(ruta_guardar_csv, index=False) # Guardamos el DataFrame como un archivo CSV.
+        self.__DF_PremierLeague.to_csv(ruta_guardar_csv, index=False) # Guardamos el DataFrame como un archivo CSV.
         print('El Dataset limpio se a guardado en la ruta:', {ruta_guardar_csv})
-
