@@ -68,3 +68,7 @@ class Equipo:
 # 3. Metodod para saber cuantos titulos ha ganado el equipo.
     def ganar_titulo(self):
         self.__titulos_ganados += 1
+
+# 4. Metodo para saber cuando son los partidos del equipo.
+    def proximo_partido(self, fecha, rival):
+        return f'El próximo partido del {self.__nom_equipo} es el {fecha} contra {rival}.'
