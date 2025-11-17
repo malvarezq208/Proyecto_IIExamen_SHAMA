@@ -114,6 +114,5 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
     def csv_limpio(self, ruta_guardar_csv = 'data/processed/premier_clean.csv'):
         carpeta = os.path.dirname(ruta_guardar_csv) # Obtenemos la carpeta del path proporcionado.
         os.makedirs(carpeta, exist_ok=True) # Creamos la carpeta si no existe.
-        self.__DF_Premier_League.to_csv(ruta_guardar_csv, index=False) # Guardamos el DataFrame como un archivo CSV.
+        self.__DF_PremierLeague.to_csv(ruta_guardar_csv, index=False) # Guardamos el DataFrame como un archivo CSV.
         print('El Dataset limpio se a guardado en la ruta:', {ruta_guardar_csv})
-
