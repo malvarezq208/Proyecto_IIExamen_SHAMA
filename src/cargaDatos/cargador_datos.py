@@ -1,6 +1,8 @@
 
 
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 #Definicion clase cargador_datos CSV de la carpeta data-raw
 class cargador_datos:
@@ -54,6 +56,25 @@ class cargador_datos:
 
             print("Su archivo fue cargado correctamente.")
             return self.df #Devuelve el CSV procesado
+
+cargador = cargador_datos("ejemplo_estudiantes.csv")
+
+
+# Visualización de Distribuciones Univariadas:
+
+# Visualización de Distribuciones Univariadas:
+
+# Histograma para cada columna numérica
+for columna in cargador.df.select_dtypes(include=['number']).columns:
+    sns.histplot(cargador.df[columna])
+    plt.title(f'Distribución de {columna}')
+    plt.show()
+
+# Boxplot para cada columna numérica
+for columna in cargador.df.select_dtypes(include=['number']).columns:
+    sns.boxplot(x=cargador.df[columna])
+    plt.title(f'Boxplot de {columna}')
+    plt.show()
 
 
 

@@ -7,6 +7,7 @@
     <list default="true" id="a7a3cb46-0bfb-4e73-857b-1c999c38aa53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cargaDatos/cargador_datos.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cargaDatos/cargador_datos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/eda/procesador_eda.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eda/procesador_eda.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +30,7 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.cargador_datos.executor": "Run",
+    "Python.procesador_eda.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
