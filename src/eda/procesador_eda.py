@@ -1,6 +1,9 @@
 # Importamos las librerías necesarias.
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 import os # Libreria para manejar rutas de archivos.
 
 #Iniciamos la clase.
@@ -116,3 +119,59 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
         os.makedirs(carpeta, exist_ok=True) # Creamos la carpeta si no existe.
         self.__DF_PremierLeague.to_csv(ruta_guardar_csv, index=False) # Guardamos el DataFrame como un archivo CSV.
         print('El Dataset limpio se a guardado en la ruta:', {ruta_guardar_csv})
+
+#-------------------------------------------------------------------------------------------------------------------#
+#9 Matriz de correlacion
+    def eda_matriz_correlacion(self):
+    #herramienta estadística que muestra cómo se relacionan entre si las diferentes variables numericas dentro de un conjunto datos
+
+        # Calcular la matriz de correlación
+        matriz_correlacion = self.__DF_PremierLeague.corr()
+
+        # Mostrar la matriz como un mapa de calor
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(matriz_correlacion, annot=True, cmap='coolwarm', fmt=".2f")
+        plt.title('Matriz de Correlación')
+        plt.show()
+
+        return matriz_correlacion
+
+#-------------------------------------------------------------------------------------------------------------------#
+#10 Histograma para cada columna numerica
+def eda_histogramas(self):
+
+#Genera un histograma para cada columna numérica del DataFrame.
+
+    columnas_numericas = self.__DF_PremierLeague.select_dtypes(include=['number']).columns
+
+    for columna in columnas_numericas:
+        plt.figure(figsize=(8, 5))
+        sns.histplot(self.__DF_PremierLeague[columna], kde=True, bins=30, color='skyblue')
+        plt.title(f'Distribución de {columna}')
+        plt.xlabel(columna)
+        plt.ylabel('Frecuencia')
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show()
+
+#-------------------------------------------------------------------------------------------------------------------#
+#11 Boxplot
+
+def generar_boxplots(self):
+
+#Genera un boxplot para cada columna numérica del DataFrame.
+
+
+    columnas_numericas = self.__DF_PremierLeague.select_dtypes(include=['number']).columns
+
+    for columna in columnas_numericas:
+        plt.figure(figsize=(8, 4))
+        sns.boxplot(x=self.__DF_PremierLeague[columna], color='lightgreen')
+        plt.title(f'Boxplot de {columna}')
+        plt.xlabel(columna)
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show()
+
+
+#-------------------------------------------------------------------------------------------------------------------#
