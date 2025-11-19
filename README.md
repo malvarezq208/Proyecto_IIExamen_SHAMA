@@ -1,5 +1,3 @@
-# Proyecto_IIExamen_SHAMA
-Proyecto II Examen Programacion 2(Sharon Obando y Marco Alvarez)
 # 🏆 Premier League – Proyecto II usando Programación Orientada a Objetos (POO).
 ### Carrera: Big Data
 ### Curso: Programación II
