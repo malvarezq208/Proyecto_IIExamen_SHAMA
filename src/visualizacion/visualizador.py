@@ -37,7 +37,7 @@ class Visualizador: # Clase para realizar visualizaciones del dataset de premier
         plt.show() # Muestra el gráfico.
 
 #-------------------------------------------------------------------------------------------------------------------#
-# 3. Metodo: Grafico heatmao de correlación entre las variables 'Yellow Cards', 'Red Cards' y 'Tackles'.
+# 3. Metodo: Grafico heatmap de correlación entre las variables 'Yellow Cards', 'Red Cards' y 'Tackles'.
     def heatmap_correlacion(self): # Inicio del método.
         plt.figure(figsize=(8,6)) # Tamaño de la figura.
         correlacion = self.__DF_PremierClean[['Yellow Cards', 'Red Cards', 'Tackles']].corr() # Cálculo de la matriz de correlación.
@@ -68,4 +68,15 @@ class Visualizador: # Clase para realizar visualizaciones del dataset de premier
         plt.ylabel('Asistencias', fontsize=14) # Titulo del eje Y.
         plt.xticks(rotation=45) # Rotación de las etiquetas del eje X para mejor visualización.
         plt.show() # Muestra el gráfico.
+
+#-------------------------------------------------------------------------------------------------------------------#
+#6 Metodo: Grafico que determine en cual minuto del partido se anotan la mayor cantidad de goles.
+#Para determinar en apuestas cual seria el mejor momento para apostar y acertar puntajes
+
+
+#-------------------------------------------------------------------------------------------------------------------#
+#7 Metodo: Grafico que muestre las tarjetas amrillas y rojas por  posiciones de los jugadores para determinar cual
+# es la posicion con mas tarjetas.
+
+
 

@@ -18,7 +18,7 @@ class jugador:
     @player.setter 
     def player(self, player):
         self.__player = player
-    
+
     #Team
     @property
     def team(self):

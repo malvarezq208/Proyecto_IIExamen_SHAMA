@@ -40,13 +40,10 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
     
 # 1. Metodo en el cual obtendremos informacion general del Dataset que se nos a proporcionado.
     def informacion_premier_league(self):
-        print('Informacion General de la Premier League:\n')
-        print('Head')
-        print (self.__DF_PremierLeague.head(), '\n')
-        print('Informacion')
-        print (self.__DF_PremierLeague.info(), '\n')
-        print('Estadisticas')
-        print (self.__DF_PremierLeague.describe())
+        print("Informacion general del dataset")
+        print(f"Primeros 5 registros del data set: \n{self.__DF_PremierLeague.head()}")
+        print(f"Estadistica basica del dataset{self.__DF_PremierLeague.describe()}")
+
 
 #-------------------------------------------------------------------------------------------------------------------#
 
@@ -63,7 +60,7 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
 
 # 3. Metodo en el cual obtendremos aquellos datos nulos.
     def datos_nulos(self):
-        print('Este dataset tiene nulos en las siguiente columnas: \n')
+        print("Este dataset tiene datos nulos en:")
         print(self.__DF_PremierLeague.isnull().sum())
 
 # Dentro de este segundo metodo tendremos 2 metodos que ayuden a eliminar o imputar los datos nulos.
@@ -79,8 +76,9 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
                 self.__DF_PremierLeague[columnas].fillna(self.__DF_PremierLeague[columnas].mean(), inplace=True)
             else:
                 self.__DF_PremierLeague[columnas].fillna(self.__DF_PremierLeague[columnas].mode()[0], inplace=True)
+        print("Los datos nulos han sido imputados")
         
-        print('Los datos nulos han sido imputados correctamente')
+
 
 #-------------------------------------------------------------------------------------------------------------------#
 # 4. Metodo en cual podremos obtener los valores duplicados.
@@ -112,23 +110,39 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
         self.__DF_PremierLeague['Position'] = (self.__DF_PremierLeague['Position'].astype(str).str.upper().str.strip()) # Normaliza las posiciones de los jugadores.
         print('Las categorias de equipo y posicion han sido normalizadas')
 
-#-------------------------------------------------------------------------------------------------------------------#
 # 8. Metodo para poder guardar nuestro csv limpio y guardarlo en la carpeta processed.
-    def csv_limpio(self, ruta_guardar_csv = 'data/processed/premier_clean.csv'):
-        carpeta = os.path.dirname(ruta_guardar_csv) # Obtenemos la carpeta del path proporcionado.
-        os.makedirs(carpeta, exist_ok=True) # Creamos la carpeta si no existe.
-        self.__DF_PremierLeague.to_csv(ruta_guardar_csv, index=False) # Guardamos el DataFrame como un archivo CSV.
-        print('El Dataset limpio se a guardado en la ruta:', {ruta_guardar_csv})
+    def csv_limpio(self, ruta_guardar_csv='data/processed/premier_clean.csv'):
+            carpeta = os.path.dirname(ruta_guardar_csv)  # Obtenemos la carpeta del path proporcionado.
+            os.makedirs(carpeta, exist_ok=True)  # Creamos la carpeta si no existe.
+            self.__DF_PremierLeague.to_csv(ruta_guardar_csv, index=False)  # Guardamos el DataFrame como un archivo CSV.
+            print('El Dataset limpio se a guardado en la ruta:', {ruta_guardar_csv})
 
-#-------------------------------------------------------------------------------------------------------------------#
-#9 Matriz de correlacion
+        # -------------------------------------------------------------------------------------------------------------------#
+# 9 Matriz de correlacion
+    #def eda_matriz_correlacion(self):
+    # herramienta estadística que muestra cómo se relacionan entre si las diferentes variables numericas dentro de un conjunto datos
+    # Calcular la matriz de correlación
+    #    matriz_correlacion = self.__DF_PremierLeague.corr()
+
+    # Mostrar la matriz como un mapa de calor
+    #    plt.figure(figsize=(10, 8))
+    #    sns.heatmap(matriz_correlacion, annot=True, cmap='coolwarm', fmt=".2f")
+    #    plt.title('Matriz de Correlación')
+    #    plt.show()
+
+    #    return matriz_correlacion
+
     def eda_matriz_correlacion(self):
-    #herramienta estadística que muestra cómo se relacionan entre si las diferentes variables numericas dentro de un conjunto datos
 
-        # Calcular la matriz de correlación
-        matriz_correlacion = self.__DF_PremierLeague.corr()
+        # Seleccionar únicamente columnas numéricas
+        df_numerico = self.__DF_PremierLeague.select_dtypes(include=['number'])
 
-        # Mostrar la matriz como un mapa de calor
+        if df_numerico.empty:
+            print("No hay columnas numéricas para generar la matriz de correlación.")
+            return None
+
+        matriz_correlacion = df_numerico.corr()
+
         plt.figure(figsize=(10, 8))
         sns.heatmap(matriz_correlacion, annot=True, cmap='coolwarm', fmt=".2f")
         plt.title('Matriz de Correlación')
@@ -136,42 +150,74 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
 
         return matriz_correlacion
 
-#-------------------------------------------------------------------------------------------------------------------#
-#10 Histograma para cada columna numerica
-def eda_histogramas(self):
+        # -------------------------------------------------------------------------------------------------------------------#
+# 10 Histograma para cada columna numerica
+    def eda_histogramas(self):
 
-#Genera un histograma para cada columna numérica del DataFrame.
+    # Genera un histograma para la variable "Number"
+    # Verifica que la columna exista y sea numérica para generar el grafico
+        columna="Number"
+        if columna in self.__DF_PremierLeague.select_dtypes(include=['number']).columns:
+            plt.figure(figsize=(8, 5))
+            sns.histplot(self.__DF_PremierLeague[columna], kde=True, bins=10, color='skyblue')
+            plt.title("Histograma variable Numero de camisa")
+            plt.xlabel("Numero de camisa")
+            plt.ylabel('Cantidad de jugadores por numero de camisa')
+            plt.grid(True)
+            plt.tight_layout()
+            plt.show()
+        else:
+            print(f"La columna '{columna}' no existe o no es numérica.")
 
-    columnas_numericas = self.__DF_PremierLeague.select_dtypes(include=['number']).columns
+    # -------------------------------------------------------------------------------------------------------------------#
+# 11 Boxplot
 
-    for columna in columnas_numericas:
-        plt.figure(figsize=(8, 5))
-        sns.histplot(self.__DF_PremierLeague[columna], kde=True, bins=30, color='skyblue')
-        plt.title(f'Distribución de {columna}')
-        plt.xlabel(columna)
-        plt.ylabel('Frecuencia')
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show()
+    def generar_boxplots(self):
 
-#-------------------------------------------------------------------------------------------------------------------#
-#11 Boxplot
+    # Genera un boxplot para la columna numérica age.
 
-def generar_boxplots(self):
+        columna = "Age"
 
-#Genera un boxplot para cada columna numérica del DataFrame.
+        if columna in self.__DF_PremierLeague.select_dtypes(include=['number']).columns:
+            plt.figure(figsize=(8, 5))
+            sns.boxplot(x=self.__DF_PremierLeague[columna], color='skyblue')
+            plt.title("Box plot de edad de jugadores")
+            plt.xlabel("Edad de jugadores")
+            plt.grid(True)
+            plt.tight_layout()
+            plt.show()
+        else:
+            print(f"La columna '{columna}' no existe o no es numérica.")
 
-
-    columnas_numericas = self.__DF_PremierLeague.select_dtypes(include=['number']).columns
-
-    for columna in columnas_numericas:
-        plt.figure(figsize=(8, 4))
-        sns.boxplot(x=self.__DF_PremierLeague[columna], color='lightgreen')
-        plt.title(f'Boxplot de {columna}')
-        plt.xlabel(columna)
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show()
-
+    # -------------------------------------------------------------------------------------------------------------------#
+# 9. Metodo para realizar la limpieza general del dataset
+    def ejecutar_eda(self):
+        print("Ejecucion procesamiento EDA \n")
+        print("\n")
+        self.informacion_premier_league()
+        print("\n")
+        self.limpiar_texto()
+        print("\n")
+        self.datos_nulos()
+        print("\n")
+        self.imputar_datos_nulos()
+        print("\n")
+        self.datos_duplicados()
+        print("\n")
+        self.eliminar_datos_duplicados()
+        print("\n")
+        self.correccion_edad()
+        print("\n")
+        self.numero_camiseta()
+        print("\n")
+        self.normalizacion_categorias()
+        print("\n")
+        self.csv_limpio()
+        print("\n")
+        print(f"El dataset modificado seria el siguiente {self.__DF_PremierLeague}")
+        print("---------------------------------------------------------------------------------------------------\n")
+        self.eda_matriz_correlacion()
+        self.eda_histogramas()
+        self.generar_boxplots()
 
 #-------------------------------------------------------------------------------------------------------------------#
