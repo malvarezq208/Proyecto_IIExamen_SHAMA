@@ -14,6 +14,7 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
         self.__num_filas = DF_PremierLeague.shape[0] # Aqui tenemos nuestros atributos privados que almacenan el numero de filas y columnas.
         self.__num_columnas = DF_PremierLeague.shape[1]
 
+
 # Creamos los propertys (getters) para acceder a los atributos privados.
     @property
     def DF_PremierLeague(self):
@@ -119,19 +120,6 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
 
         # -------------------------------------------------------------------------------------------------------------------#
 # 9 Matriz de correlacion
-    #def eda_matriz_correlacion(self):
-    # herramienta estadística que muestra cómo se relacionan entre si las diferentes variables numericas dentro de un conjunto datos
-    # Calcular la matriz de correlación
-    #    matriz_correlacion = self.__DF_PremierLeague.corr()
-
-    # Mostrar la matriz como un mapa de calor
-    #    plt.figure(figsize=(10, 8))
-    #    sns.heatmap(matriz_correlacion, annot=True, cmap='coolwarm', fmt=".2f")
-    #    plt.title('Matriz de Correlación')
-    #    plt.show()
-
-    #    return matriz_correlacion
-
     def eda_matriz_correlacion(self):
 
         # Seleccionar únicamente columnas numéricas
@@ -159,7 +147,7 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
         columna="Number"
         if columna in self.__DF_PremierLeague.select_dtypes(include=['number']).columns:
             plt.figure(figsize=(8, 5))
-            sns.histplot(self.__DF_PremierLeague[columna], kde=True, bins=10, color='skyblue')
+            sns.histplot(self.__DF_PremierLeague[columna], kde=True, bins=10, palette='magma')
             plt.title("Histograma variable Numero de camisa")
             plt.xlabel("Numero de camisa")
             plt.ylabel('Cantidad de jugadores por numero de camisa')
@@ -180,7 +168,7 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
 
         if columna in self.__DF_PremierLeague.select_dtypes(include=['number']).columns:
             plt.figure(figsize=(8, 5))
-            sns.boxplot(x=self.__DF_PremierLeague[columna], color='skyblue')
+            sns.boxplot(x=self.__DF_PremierLeague[columna], palette='magma')
             plt.title("Box plot de edad de jugadores")
             plt.xlabel("Edad de jugadores")
             plt.grid(True)
@@ -216,8 +204,11 @@ class ProcesadorEDA: # Creamos la clase ProcesadorEDA la cual nos ayudara a real
         print("\n")
         print(f"El dataset modificado seria el siguiente {self.__DF_PremierLeague}")
         print("---------------------------------------------------------------------------------------------------\n")
+        print("Matriz correlacion, histograma y boxplot")
+        print("\n")
         self.eda_matriz_correlacion()
         self.eda_histogramas()
         self.generar_boxplots()
+
 
 #-------------------------------------------------------------------------------------------------------------------#
