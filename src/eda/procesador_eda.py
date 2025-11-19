@@ -175,3 +175,4 @@ def generar_boxplots(self):
 
 
 #-------------------------------------------------------------------------------------------------------------------#
+        print('El Dataset limpio se a guardado en la ruta:', {ruta_guardar_csv})

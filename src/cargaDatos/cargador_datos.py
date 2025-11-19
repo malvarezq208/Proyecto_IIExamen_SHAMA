@@ -1,5 +1,3 @@
-
-
 import pandas as pd
 
 #Definicion clase cargador_datos CSV de la carpeta data-raw
